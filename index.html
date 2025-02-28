@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Offensive Language Detector</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <div class="container">
+        <h1>AI Offensive Language Detector</h1>
+
+        <div class="input-group">
+            <label for="text-input">Enter Text:</label>
+            <textarea id="text-input" placeholder="Type here..."></textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="voice-input">Upload Voice File:</label>
+            <input type="file" id="voice-input" accept="audio/*">
+        </div>
+
+        <div class="input-group">
+            <label for="youtube-url">YouTube Video URL:</label>
+            <input type="url" id="youtube-url" placeholder="Enter YouTube link">
+        </div>
+
+        <div class="input-group">
+            <label for="file-upload">Upload Large File:</label>
+            <input type="file" id="file-upload" accept=".txt, .csv">
+        </div>
+
+        <button id="submit-btn">Submit</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js").then(() => {
+                console.log("Service Worker Registered");
+            });
+        }
+    </script>
+</body>
+</html>
