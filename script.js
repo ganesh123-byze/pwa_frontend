@@ -1,50 +1,43 @@
-document.getElementById("submit-btn").addEventListener("click", async function (event) {
-    event.preventDefault();
-    let responseContainer = document.getElementById("response-container");
+document.getElementById("submit-btn").addEventListener("click", async function () {
+    let text = document.getElementById("text-input").value.trim();
+    let voiceFile = document.getElementById("voice-input").files[0];
+    let youtubeUrl = document.getElementById("youtube-url").value.trim();
+    let fileUpload = document.getElementById("file-upload").files[0];
 
-    let textInput = document.getElementById("text-input");
-    let voiceInput = document.getElementById("voice-input");
-    let youtubeInput = document.getElementById("youtube-url");
-
-    let text = textInput.value.trim();
-    let voiceFile = voiceInput.files[0];
-    let youtubeURL = youtubeInput.value.trim();
-
-    if (!text && !voiceFile && !youtubeURL) {
-        responseContainer.innerHTML = "<p style='color: red;'>❌ Enter text, upload a voice file, or enter a YouTube URL.</p>";
+    if (!text && !youtubeUrl && !voiceFile && !fileUpload) {
+        alert("Please enter text, record/upload a voice file, or provide a YouTube URL!");
         return;
     }
 
-    let formData = new FormData();
-    if (text) formData.append("text", text);
-    if (voiceFile) formData.append("voice_file", voiceFile);
-    if (youtubeURL) formData.append("youtube_url", youtubeURL);
+    console.log("Text:", text || "No text entered");
+    console.log("YouTube URL:", youtubeUrl || "No URL provided");
+    console.log("Voice File:", voiceFile ? voiceFile.name : "No file uploaded");
+    console.log("Large File:", fileUpload ? fileUpload.name : "No file uploaded");
 
-    // ✅ Show loading text
-    responseContainer.innerHTML = "<p style='color: blue;'>⏳ Processing request...</p>";
+    // 🔹 Send text input to local FastAPI backend
+    if (text) {
+        try {
+            let response = await fetch("http://127.0.0.1:8000/analyze", {  // ✅ Using Localhost Backend
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text: text })
+            });
 
-    try {
-        let response = await fetch("https://pwa-backend-1bin.onrender.com/analyze", {  // ✅ Using Render Backend
-            method: "POST",
-            body: formData,
-            headers: { "Accept": "application/json" }
-        });
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
-        if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
+            let data = await response.json();
+            alert(`Result: ${data.label} (Confidence: ${data.score.toFixed(2)})`);
+
+            // ✅ Clear input fields after successful response
+            document.getElementById("text-input").value = "";
+            document.getElementById("voice-input").value = "";
+            document.getElementById("youtube-url").value = "";
+            document.getElementById("file-upload").value = "";
+        } catch (error) {
+            console.error("Error connecting to backend:", error);
+            alert("Failed to analyze text. Ensure your backend is running.");
         }
-
-        let data = await response.json();
-        console.log("🔹 Backend Response:", data);
-        responseContainer.innerHTML = `<p style="color: green;">✅ Response: ${data.message}</p>`;
-
-        // ✅ Clear input fields after successful submission
-        textInput.value = "";
-        voiceInput.value = "";
-        youtubeInput.value = "";
-
-    } catch (error) {
-        console.error("❌ Fetch Error:", error);
-        responseContainer.innerHTML = `<p style='color: red;'>❌ Failed to connect: ${error.message}</p>`;
+    } else {
+        alert("Please enter some text to analyze.");
     }
 });
