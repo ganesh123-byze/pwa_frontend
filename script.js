@@ -17,11 +17,12 @@ document.getElementById("submit-btn").addEventListener("click", async function (
     // 🔹 Send text input to local FastAPI backend
     if (text) {
         try {
-            let response = await fetch("http://127.0.0.1:8000/analyze", {  // ✅ Using Localhost Backend
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text: text })
-            });
+           let response = await fetch("http://127.0.0.1:8080/analyze", {  // ✅ Use new port 8080
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: text })
+});
+
 
             if (!response.ok) throw new Error(`Server error: ${response.status}`);
 
