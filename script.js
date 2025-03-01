@@ -1,9 +1,9 @@
-const BACKEND_URL = "http://localhost:8000";  // Change to your backend URL when deployed
+const BACKEND_URL = "https://c432-2401-4900-4fbe-320b-8d2-a21e-aadf-bac9.ngrok-free.app";  // Your ngrok URL
 
 document.getElementById("submit-btn").addEventListener("click", async function () {
     let text = document.getElementById("text-input").value.trim();
     let youtubeUrl = document.getElementById("youtube-url").value.trim();
-    
+
     if (!text && !youtubeUrl) {
         alert("Please enter text or a YouTube URL.");
         return;
@@ -11,7 +11,7 @@ document.getElementById("submit-btn").addEventListener("click", async function (
 
     let payload = { text: text || null, youtube_url: youtubeUrl || null };
 
-    console.log("🚀 Sending data to backend:", payload);  // Log request in frontend
+    console.log("🚀 Sending data to backend:", payload);
 
     try {
         let response = await fetch(`${BACKEND_URL}/receive`, {
@@ -21,7 +21,7 @@ document.getElementById("submit-btn").addEventListener("click", async function (
         });
 
         let data = await response.json();
-        console.log("🎯 Backend Response:", data);  // Log response in frontend
+        console.log("🎯 Backend Response:", data);
         alert(`Backend Response: ${data.message}`);
     } catch (error) {
         console.error("❌ Error connecting to backend:", error);
