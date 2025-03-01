@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://9b83-2401-4900-60e3-3003-9404-eb64-67d-dd6f.ngrok-free.app";  // Updated ngrok URL
+const BACKEND_URL = "https://95ee-2401-4900-60e3-3003-9404-eb64-67d-dd6f.ngrok-free.app";  // Updated ngrok URL
 
 document.getElementById("submit-btn").addEventListener("click", async function () {
     let text = document.getElementById("text-input").value.trim();
