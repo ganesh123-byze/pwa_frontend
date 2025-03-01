@@ -1,23 +1,28 @@
-const BACKEND_URL = "https://cce8-2401-4900-4fbe-320b-8d2-a21e-aadf-bac9.ngrok-free.app/";  // Your ngrok URL
+const BACKEND_URL = "https://9a77-2401-4900-4fbe-320b-8d2-a21e-aadf-bac9.ngrok-free.app";  // Updated ngrok URL
 
 document.getElementById("submit-btn").addEventListener("click", async function () {
     let text = document.getElementById("text-input").value.trim();
     let youtubeUrl = document.getElementById("youtube-url").value.trim();
+    let voiceFile = document.getElementById("voice-input")?.files[0];
+    let largeFile = document.getElementById("file-upload")?.files[0];
 
-    if (!text && !youtubeUrl) {
-        alert("Please enter text or a YouTube URL.");
+    if (!text && !youtubeUrl && !voiceFile && !largeFile) {
+        alert("Please enter text, upload a file, or provide a YouTube URL.");
         return;
     }
 
-    let payload = { text: text || null, youtube_url: youtubeUrl || null };
+    let formData = new FormData();
+    if (text) formData.append("text", text);
+    if (youtubeUrl) formData.append("youtube_url", youtubeUrl);
+    if (voiceFile) formData.append("voice_file", voiceFile);
+    if (largeFile) formData.append("large_file", largeFile);
 
-    console.log("🚀 Sending data to backend:", payload);
+    console.log("🚀 Sending data to backend:", formData);
 
     try {
         let response = await fetch(`${BACKEND_URL}/receive`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: formData
         });
 
         let data = await response.json();
