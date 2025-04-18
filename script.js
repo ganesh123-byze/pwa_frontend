@@ -20,14 +20,14 @@ document.getElementById("submit-btn").addEventListener("click", async function (
     console.log("🚀 Sending data to backend:", formData);
 
     try {
-        let response = await fetch(`${BACKEND_URL}/receive`, {
+        let response = await fetch(`${BACKEND_URL}/analyze`, {
             method: "POST",
             body: formData
         });
 
         let data = await response.json();
         console.log("🎯 Backend Response:", data);
-        alert(`Backend Response: ${data.message}`);
+        alert(`Backend Response: Hate Rate - ${data.hate_rate}%`);
     } catch (error) {
         console.error("❌ Error connecting to backend:", error);
         alert("Failed to send data. Ensure your backend is running.");
